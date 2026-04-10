@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flavia's Dance Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .products-section {
+            flex: 2;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .forms-section {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        form {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 90%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            overflow: auto;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .disclaimer {
+            margin-top: 30px;
+            padding: 10px;
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #856404;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🩰 Flavia's Dance Store</h1>
+    <p>Welcome to my dance products e-commerce store.</p>
+
+    <div class="container">
+        <!-- Products Display Section -->
+        <div class="products-section">
+            <h2>Products</h2>
+            <table id="products-table">
+                <thead>
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="products-list">
+                    <tr>
+                        <td colspan="4">Loading products...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Forms Section -->
+        <div class="forms-section">
+            <h2>Manage Products</h2>
+
+            <!-- Create Product Form -->
+            <form id="create-product-form">
+                <h3>Create New Product</h3>
+                <label>Store ID:</label>
+                <input type="text" id="create-storeId" value="dance-store-001" required>
+                <label>Store Name:</label>
+                <input type="text" id="create-storeName" value="Flavia's Dance Shop" required>
+                <label>Product ID:</label>
+                <input type="text" id="create-productId" placeholder="e.g., d6" required>
+                <label>Product Name:</label>
+                <input type="text" id="create-productName" required>
+                <label>Price:</label>
+                <input type="number" id="create-price" step="0.01" required>
+                <button type="submit">Create Product</button>
+            </form>
+
+            <!-- Get Product Form -->
+            <form id="get-product-form">
+                <h3>Get Product by ID</h3>
+                <label>Product ID:</label>
+                <input type="text" id="get-productId" placeholder="e.g., d1" required>
+                <button type="submit">Fetch Product</button>
+            </form>
+
+            <!-- Update Product Form -->
+            <form id="update-product-form">
+                <h3>Update Product</h3>
+                <label>Product ID:</label>
+                <input type="text" id="update-productId" placeholder="e.g., d1" required>
+                <label>New Name (optional):</label>
+                <input type="text" id="update-productName">
+                <label>New Price (optional):</label>
+                <input type="number" id="update-price" step="0.01">
+                <button type="submit">Update Product</button>
+            </form>
+
+            <!-- Delete Product Form -->
+            <form id="delete-product-form">
+                <h3>Delete Product</h3>
+                <label>Product ID:</label>
+                <input type="text" id="delete-productId" placeholder="e.g., d1" required>
+                <button type="submit" class="delete-btn">Delete Product</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Response Display -->
+    <h2>Response</h2>
+    <pre id="response-output">{}</pre>
+
+    <div class="disclaimer">
+        <strong>Disclaimer:</strong> This application is for demonstrating student web development skills only. All data
+        shown is for educational and portfolio purposes.
+    </div>
+
+    <script>
+        // API Base URL - change to your Render URL when deployed
+        const API_BASE = 'https://flavia-viana-full-stack-application.onrender.com';
+
+        // Get elements
+        const responseOutput = document.getElementById('response-output');
+        const productsList = document.getElementById('products-list');
+
+        // Helper function to display JSON
+        function showResponse(data) {
+            responseOutput.textContent = JSON.stringify(data, null, 2);
+        }
+
+        // Helper function to fetch and display all products
+        async function loadAllProducts() {
+            try {
+                const response = await fetch(`${API_BASE}/products`);
+                const products = await response.json();
+                displayProductsTable(products);
+            } catch (error) {
+                console.error('Error loading products:', error);
+                productsList.innerHTML = '<tr><td colspan="4">Error loading products. Make sure the server is running.</td></tr>';
+            }
+        }
+
+        // Helper function to display products in table
+        function displayProductsTable(products) {
+            if (!products || products.length === 0) {
+                productsList.innerHTML = '<tr><td colspan="4">No products found.</td></tr>';
+                return;
+            }
+
+            productsList.innerHTML = '';
+            products.forEach(product => {
+                const row = productsList.insertRow();
+                row.insertCell(0).textContent = product.productId;
+                row.insertCell(1).textContent = product.productName;
+                row.insertCell(2).textContent = `$${product.price.toFixed(2)}`;
+
+                const actionsCell = row.insertCell(3);
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.style.padding = '5px 10px';
+                deleteBtn.onclick = () => deleteProduct(product.productId);
+                actionsCell.appendChild(deleteBtn);
+            });
+        }
+
+        // Delete product function
+        async function deleteProduct(productId) {
+            if (!confirm(`Are you sure you want to delete product ${productId}?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/products/${productId}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                showResponse(data);
+                loadAllProducts(); // Refresh the table
+            } catch (error) {
+                showResponse({ error: error.message });
+            }
+        }
+
+        // CREATE PRODUCT
+        document.getElementById('create-product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const product = {
+                storeId: document.getElementById('create-storeId').value,
+                storeName: document.getElementById('create-storeName').value,
+                productId: document.getElementById('create-productId').value,
+                productName: document.getElementById('create-productName').value,
+                price: parseFloat(document.getElementById('create-price').value)
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/products`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(product)
+                });
+                const data = await response.json();
+                showResponse(data);
+                loadAllProducts(); // Refresh the table
+
+                // Clear form
+                document.getElementById('create-productId').value = '';
+                document.getElementById('create-productName').value = '';
+                document.getElementById('create-price').value = '';
+            } catch (error) {
+                showResponse({ error: error.message });
+            }
+        });
+
+        // GET PRODUCT BY ID
+        document.getElementById('get-product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const productId = document.getElementById('get-productId').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/products/${productId}`);
+                const data = await response.json();
+                showResponse(data);
+            } catch (error) {
+                showResponse({ error: error.message });
+            }
+        });
+
+        // UPDATE PRODUCT
+        document.getElementById('update-product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const productId = document.getElementById('update-productId').value;
+            const updateData = {};
+
+            const newName = document.getElementById('update-productName').value;
+            const newPrice = document.getElementById('update-price').value;
+
+            if (newName) updateData.productName = newName;
+            if (newPrice) updateData.price = parseFloat(newPrice);
+
+            try {
+                const response = await fetch(`${API_BASE}/products/${productId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updateData)
+                });
+                const data = await response.json();
+                showResponse(data);
+                loadAllProducts(); // Refresh the table
+
+                // Clear form
+                document.getElementById('update-productId').value = '';
+                document.getElementById('update-productName').value = '';
+                document.getElementById('update-price').value = '';
+            } catch (error) {
+                showResponse({ error: error.message });
+            }
+        });
+
+        // DELETE PRODUCT (from form)
+        document.getElementById('delete-product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const productId = document.getElementById('delete-productId').value;
+
+            if (!confirm(`Are you sure you want to delete product ${productId}?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/products/${productId}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                showResponse(data);
+                loadAllProducts(); // Refresh the table
+
+                // Clear form
+                document.getElementById('delete-productId').value = '';
+            } catch (error) {
+                showResponse({ error: error.message });
+            }
+        });
+
+        // Load products when page loads
+        loadAllProducts();
+    </script>
+</body>
+
+</html>

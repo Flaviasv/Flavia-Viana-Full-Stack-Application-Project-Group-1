@@ -10,6 +10,7 @@ require('dotenv').config();
 
 // Middleware
 app.use(express.json());
+app.use(express.static('public'));
 
 // MongoDB Connection
 mongoose.connect(process.env.DB_URI)
@@ -19,7 +20,7 @@ mongoose.connect(process.env.DB_URI)
 // GET /products - Get all products from this store
 app.get('/products', async (req, res) => {
     try {
-        const products = await Product.find();
+        const products = await Product.find().sort({ productId: 1 });
         res.status(200).json(products);
     } catch (error) {
         console.error(error);
@@ -55,9 +56,9 @@ app.post('/products', async (req, res) => {
 });
 
 // Basic route to test if server is working
-app.get('/', (req, res) => {
-    res.send('Server is running!');
-});
+// app.get('/', (req, res) => {
+// res.send('Server is running!');
+// });
 
 // GET /products/:productId - Get a single product by productId
 app.get('/products/:productId', async (req, res) => {
