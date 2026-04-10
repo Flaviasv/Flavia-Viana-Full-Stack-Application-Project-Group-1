@@ -1,0 +1,70 @@
+### POST - Add Ballet Slippers
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+    "storeId": "dance-store-001",
+    "storeName": "Flavia's Dance Shop",
+    "productId": "d1",
+    "productName": "Ballet Slippers",
+    "price": 49.99
+}
+
+### POST - Add Tap Shoes
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+    "storeId": "dance-store-001",
+    "storeName": "Flavia's Dance Shop",
+    "productId": "d2",
+    "productName": "Tap Shoes",
+    "price": 79.99
+}
+
+### POST - Add Jazz Dance Leotard
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+    "storeId": "dance-store-001",
+    "storeName": "Flavia's Dance Shop",
+    "productId": "d3",
+    "productName": "Jazz Dance Leotard",
+    "price": 39.99
+}
+
+### POST - Add Hip Hop Sweatpants
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+    "storeId": "dance-store-001",
+    "storeName": "Flavia's Dance Shop",
+    "productId": "d4",
+    "productName": "Hip Hop Sweatpants",
+    "price": 34.99
+}
+
+### POST - Add Dance Warm-Up Leggings
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+    "storeId": "dance-store-001",
+    "storeName": "Flavia's Dance Shop",
+    "productId": "d5",
+    "productName": "Dance Warm-Up Leggings",
+    "price": 44.99
+}
+
+### PUT - Update Ballet Slippers price
+PUT http://localhost:3000/products/d1
+Content-Type: application/json
+
+{
+    "price": 59.99
+}
+
+### DELETE - Delete Ballet Slippers
+DELETE http://localhost:3000/products/d1
