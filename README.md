@@ -53,5 +53,5 @@ My store contains 5 sample dance products:
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/Flaviasv/Flavia-Viana-Full-Stack-Application-Project-Group-1.git
+cd Flavia-Viana-Full-Stack-Application-Project-Group-1
