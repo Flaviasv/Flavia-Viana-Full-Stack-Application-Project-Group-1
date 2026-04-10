@@ -3,6 +3,16 @@
 ## Overview
 This is my individual e-commerce store module for the Full Stack Application Team Project. It provides a RESTful API for managing products in my store, with data persisted in MongoDB Atlas.
 
+## Disclaimer
+This application is for demonstrating student web development skills only. All data shown is for educational and portfolio purposes.
+
+## Author
+Flavia Viana - vian0006.algonquinlive.com
+
+## Course
+Web Programming - Full Stack Application Project
+
+
 ## Tech Stack
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB Atlas with Mongoose ODM
@@ -45,12 +55,3 @@ My store contains 5 sample dance products:
 ```bash
 git clone https://github.com/your-username/your-repo-name.git
 cd your-repo-name
-
-## Disclaimer
-This application is for demonstrating student web development skills only. All data shown is for educational and portfolio purposes.
-
-## Author
-Flavia Viana - vian0006.algonquinlive.com
-
-## Course
-Web Programming - Full Stack Application Project
