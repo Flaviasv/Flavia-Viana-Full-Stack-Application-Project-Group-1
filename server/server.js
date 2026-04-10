@@ -10,7 +10,8 @@ require('dotenv').config();
 
 // Middleware
 app.use(express.json());
-app.use(express.static('public'));
+const path = require('path');
+app.use(express.static(path.join(__dirname, '../public')));
 
 // MongoDB Connection
 mongoose.connect(process.env.DB_URI)
