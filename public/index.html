@@ -98,10 +98,13 @@
 
         pre {
             background: #f4f4f4;
-            padding: 10px;
+            padding: 15px;
             overflow: auto;
-            border-radius: 4px;
-            font-size: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: monospace;
+            border: 1px solid #ddd;
+            max-height: 300px;
         }
 
         .disclaimer {
@@ -202,16 +205,33 @@
     </div>
 
     <script>
-        // API Base URL - change to your Render URL when deployed
+        // API Base URL - Replace with your Render URL
         const API_BASE = 'https://flavia-viana-full-stack-application.onrender.com';
 
         // Get elements
         const responseOutput = document.getElementById('response-output');
         const productsList = document.getElementById('products-list');
 
-        // Helper function to display JSON
+        // Helper function to display JSON (cleaned)
         function showResponse(data) {
-            responseOutput.textContent = JSON.stringify(data, null, 2);
+            // Create a deep copy so we don't modify the original data
+            const cleanData = JSON.parse(JSON.stringify(data));
+
+            // If it's a single product object, remove _id and __v
+            if (cleanData && typeof cleanData === 'object' && !Array.isArray(cleanData)) {
+                delete cleanData._id;
+                delete cleanData.__v;
+            }
+
+            // If it's an array of products, remove _id and __v from each product
+            if (Array.isArray(cleanData)) {
+                cleanData.forEach(product => {
+                    delete product._id;
+                    delete product.__v;
+                });
+            }
+
+            responseOutput.textContent = JSON.stringify(cleanData, null, 2);
         }
 
         // Helper function to fetch and display all products
@@ -262,7 +282,7 @@
                 });
                 const data = await response.json();
                 showResponse(data);
-                loadAllProducts(); // Refresh the table
+                loadAllProducts();
             } catch (error) {
                 showResponse({ error: error.message });
             }
@@ -288,9 +308,8 @@
                 });
                 const data = await response.json();
                 showResponse(data);
-                loadAllProducts(); // Refresh the table
+                loadAllProducts();
 
-                // Clear form
                 document.getElementById('create-productId').value = '';
                 document.getElementById('create-productName').value = '';
                 document.getElementById('create-price').value = '';
@@ -335,9 +354,8 @@
                 });
                 const data = await response.json();
                 showResponse(data);
-                loadAllProducts(); // Refresh the table
+                loadAllProducts();
 
-                // Clear form
                 document.getElementById('update-productId').value = '';
                 document.getElementById('update-productName').value = '';
                 document.getElementById('update-price').value = '';
@@ -362,9 +380,8 @@
                 });
                 const data = await response.json();
                 showResponse(data);
-                loadAllProducts(); // Refresh the table
+                loadAllProducts();
 
-                // Clear form
                 document.getElementById('delete-productId').value = '';
             } catch (error) {
                 showResponse({ error: error.message });
