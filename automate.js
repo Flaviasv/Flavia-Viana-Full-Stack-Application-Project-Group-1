@@ -7,7 +7,6 @@ const axios = require('axios');
 const MY_EMAIL = 'vian0006@algonquinlive.com';
 
 // List of team member API endpoints
-// REPLACE WITH ACTUAL URLs when teammates share them
 const teamEndpoints = [
     {
         name: 'Flavia (My Store)',
@@ -16,14 +15,9 @@ const teamEndpoints = [
     },
     {
         name: 'Hassan',
-        url: 'https://hassan-store.onrender.com/products',  // REPLACE with actual URL
-        email: 'abou0228@algonquinlive.com'  // REPLACE email if needed
+        url: 'https://hassan-store-api.onrender.com/products',
+        email: 'abou0228@algonquinlive.com'
     },
-    {
-        name: 'Thomas',
-        url: 'https://thomas-store.onrender.com/products',  // REPLACE with actual URL
-        email: 'thomas@algonquinlive.com'  // REPLACE with actual email
-    }
 ];
 
 // Function to test a single endpoint

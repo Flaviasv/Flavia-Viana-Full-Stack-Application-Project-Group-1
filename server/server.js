@@ -123,10 +123,9 @@ app.delete('/products/:productId', async (req, res) => {
 // GET /all-stores/products - Get products from all team stores (Aggregator)
 app.get('/all-stores/products', async (req, res) => {
     try {
-        // List of teammates' API endpoints (REPLACE WITH REAL URLs LATER)
+        // List of teammates' API endpoints
         const teammateUrls = [
-            'https://teammate1.onrender.com/products',  // REPLACE with Teammate 1 URL
-            'https://teammate2.onrender.com/products',  // REPLACE with Teammate 2 URL
+            'https://hassan-store-api.onrender.com/products',
         ];
 
         // Your own products
