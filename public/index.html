@@ -97,14 +97,16 @@
         }
 
         pre {
-            background: #f4f4f4;
+            background: #1e1e1e;
+            color: #d4d4d4;
             padding: 15px;
             overflow: auto;
             border-radius: 8px;
             font-size: 14px;
-            font-family: monospace;
-            border: 1px solid #ddd;
+            font-family: 'Consolas', 'Monaco', monospace;
+            border: 1px solid #444;
             max-height: 300px;
+            margin: 0;
         }
 
         .disclaimer {
@@ -116,6 +118,11 @@
             font-size: 12px;
             color: #856404;
             text-align: center;
+        }
+
+        .response-header {
+            margin-top: 20px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -196,7 +203,7 @@
     </div>
 
     <!-- Response Display -->
-    <h2>Response</h2>
+    <h2 class="response-header">Response</h2>
     <pre id="response-output">{}</pre>
 
     <div class="disclaimer">
@@ -212,7 +219,7 @@
         const responseOutput = document.getElementById('response-output');
         const productsList = document.getElementById('products-list');
 
-        // Helper function to display JSON (cleaned)
+        // Helper function to display JSON with syntax highlighting
         function showResponse(data) {
             // Create a deep copy so we don't modify the original data
             const cleanData = JSON.parse(JSON.stringify(data));
@@ -231,7 +238,14 @@
                 });
             }
 
-            responseOutput.textContent = JSON.stringify(cleanData, null, 2);
+            // Convert to pretty JSON string
+            const jsonString = JSON.stringify(cleanData, null, 2);
+
+            // Add syntax highlighting (keys in purple)
+            const highlightedJson = jsonString.replace(/"([^"]+)":/g, '<span style="color: #c586c0; font-weight: bold;">"$1":</span>');
+
+            // Set as HTML with proper formatting
+            responseOutput.innerHTML = highlightedJson;
         }
 
         // Helper function to fetch and display all products
